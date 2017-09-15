@@ -1,8 +1,9 @@
 body {
     background-image: url("../images/random_grey_variations_2X.png");
+    text-align: center;
 }
 
-.button {
+.button, .answer:hover {
     background-color: #696969;
     color: #87CEFA;
     border: 2px solid blue;
