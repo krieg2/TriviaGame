@@ -1,28 +1,26 @@
 var timerSeconds = 30;
 var intervalId;
+var timerId;
 var currentQuestion;
-var questions = ["Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G. all went to the same..."];
-var answers = [["High school",
-               "Gym",
-               "Barber shop",
-               "Costco"],
-               ["1","2","3","4"]];
-var correctAnswers = [0];
+var questions = ["Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G. all went to the same...",
+                 "This rapper faced an animal cruelty charge in Teaneck, New Jersey in 1999."];
+var answers = [["High school", "Gym", "Barber shop", "Costco"],
+               ["Busta Rhymes", "DMX", "Flo Rida", "Ja Rule"]];
+var correctAnswers = [0, 1];
+var currentQuestion = -1;
 
 $(document).ready(function() {
+
+    clearQuestion();
 
     $("#start").on("click", function() {
 
         $("#start").hide();
+        
         $("#remain").html("Time Remaining: <span id='time'></span> Seconds");
-        currentQuestion = 0;
-        $("#question").text(questions[currentQuestion]);
-        $("#answer_1").text(answers[currentQuestion][0]);
-        $("#answer_2").text(answers[currentQuestion][1]);
-        $("#answer_3").text(answers[currentQuestion][2]);
-        $("#answer_4").text(answers[currentQuestion][3]);
-        $("#time").text(timerSeconds);
-        intervalId = setInterval(countDown, 1000);
+
+        nextQuestion();
+
     });
 
     $(".answer").on("click", function() {
@@ -30,25 +28,32 @@ $(document).ready(function() {
         clearInterval(intervalId);
         var idx = answers[currentQuestion].indexOf($(this).text());
 
-        clearQuestions();
-        
+        clearQuestion();
+
         if(idx === correctAnswers[currentQuestion]){
             $("#question").text("Correct!");
         } else{
         	$("#question").text("Nope!");
         }
+
+        timerId = setTimeout(nextQuestion, 5000);
     });
 
     function countDown(){
 
     	timerSeconds--;
         $("#time").text(timerSeconds);
+
         if(timerSeconds === 0){
+
             clearInterval(intervalId);
+            clearQuestion();
+            $("#question").text("Out of Time!");
+            timerId = setTimeout(nextQuestion, 5000);
         }
     }
 
-    function clearQuestions(){
+    function clearQuestion(){
 
     	$("#question").text("");
         $("#answer_1").text("");
@@ -59,5 +64,18 @@ $(document).ready(function() {
         $("#answer_3").hide();
         $("#answer_4").text("");
         $("#answer_4").hide();
+    }
+
+    function nextQuestion(){
+
+    	currentQuestion++;
+    	$(".answer").show();
+        $("#question").text(questions[currentQuestion]);
+        $("#answer_1").text(answers[currentQuestion][0]);
+        $("#answer_2").text(answers[currentQuestion][1]);
+        $("#answer_3").text(answers[currentQuestion][2]);
+        $("#answer_4").text(answers[currentQuestion][3]);
+        $("#time").text(timerSeconds);
+        intervalId = setInterval(countDown, 1000);
     }
 });
