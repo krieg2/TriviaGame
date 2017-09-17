@@ -10,7 +10,7 @@ body {
     width: 300px;
     height: 28px;
     line-height: 28px;
-    font-size: 20px;
+    font-size: 22px;
     text-align: center;
     margin: 0 auto;
     cursor: pointer;
@@ -32,7 +32,11 @@ h1 {
 }
 
 .answer {
-	font-size: 20px;
+	font-size: 22px;
 	height: 28px;
     line-height: 30px;
+}
+
+#question, #remain {
+    font-size: 18px;
 }

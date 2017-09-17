@@ -20,12 +20,15 @@ var answers = [["High school", "Gym", "Barber shop", "Costco"],
                ["DMX", "LL Cool J", "Outkast", "Ludacris"],
                ["Wu-Tang", "Capone N Noreaga", "D12", "Q-Tip"],
                ["698", "300", "225", "350"],
-               ["dimple", "bullet hole", "knife stab", "fell off stage"]];
+               ["dimple", "bullet hole", "knife stab", "falling off stage"]];
 var correctAnswers = [0, 1, 2, 3, 2, 3, 2, 0, 1];
 var gifIDs = ["FdFhE8iozVW92","a3loaGa7YNq7e","3o6ZtcZnK6dKp4ke9q",
               "cuf4xstINkczC", "j7plfiJAMLdLy", "RUSu65EOMX2PS",
               "DNIQUP1vE82Aw", "3o7TKDQOjI25GIE31S", "AXOrTXrVm6CJO"];
 var currentQuestion = -1;
+var countCorrect = 0;
+var countIncorrect = 0;
+var countUnanswered = 0;
 
 $(document).ready(function() {
 
@@ -44,14 +47,17 @@ $(document).ready(function() {
     $(".answer").on("click", function() {
 
         clearInterval(intervalId);
-        var idx = answers[currentQuestion].indexOf($(this).text());
+        //var idx = answers[currentQuestion].indexOf($(this).text());
+        var idx = parseInt($(this).attr("value"));
 
         clearQuestion();
         var correctIdx = correctAnswers[currentQuestion];
         if(idx === correctIdx){
             $("#question").text("Correct!");
+            countCorrect++;
         } else{
         	$("#question").text("Nope!");
+            countIncorrect++;
             $("#correct_answer").text(`The correct answer was: ${answers[currentQuestion][correctIdx]}`);
         }
 
@@ -72,6 +78,7 @@ $(document).ready(function() {
             clearQuestion();
             var correctIdx = correctAnswers[currentQuestion];
             $("#question").text("Out of Time!");
+            countUnanswered++;
             $("#image").attr("src", `https://giphy.com/embed/${gifIDs[currentQuestion]}`);
             $("#correct_answer").text(`The correct answer was: ${answers[currentQuestion][correctIdx]}`);
             timerId = setTimeout(nextQuestion, 5000);
@@ -107,6 +114,19 @@ $(document).ready(function() {
             $("#answer_4").text(answers[currentQuestion][3]);
             $("#time").text(timerSeconds);
             intervalId = setInterval(countDown, 1000);
+        } else {
+            var result = "All done, here's how you did!<br>";
+            var results = "Correct Answers: " +
+                       countCorrect + 
+                       "<br>Incorrect Answers: " + 
+                       countIncorrect +
+                       "<br>Unaswered: " +
+                       countUnanswered;
+            $("#question").html(result);
+            $("#image").attr("src", "");
+            $("#image").hide();
+            $("#correct_answer").html(results);
+            $(".answer").hide();
         }
     }
 
