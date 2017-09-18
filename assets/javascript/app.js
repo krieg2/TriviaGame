@@ -1,7 +1,5 @@
-var timerSeconds = 30;
-var intervalId;
-var timerId;
-var currentQuestion;
+var timerSeconds, intervalId, timerId;
+
 var questions = ["Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G. all went to the same...",
                  "This rapper faced an animal cruelty charge in Teaneck, New Jersey in 1999.",
                  "This rap artist challenged L.L. Cool J in his hit single Second Round K.O.",
@@ -12,6 +10,7 @@ var questions = ["Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G. all went to the
                  "Which rap group made the hit single Shit Can Happen?",
                  "How many pounds maximum did rapper Big Pun weigh?",
                  "50 Cent's left cheek has a mark or scar from:"];
+
 var answers = [["High school", "Gym", "Barber shop", "Costco"],
                ["Busta Rhymes", "DMX", "Flo Rida", "Ja Rule"],
                ["Busta Rhymes", "Slick Rick", "Canibus", "Method Man"],
@@ -21,27 +20,28 @@ var answers = [["High school", "Gym", "Barber shop", "Costco"],
                ["Wu-Tang", "Capone N Noreaga", "D12", "Q-Tip"],
                ["698", "300", "225", "350"],
                ["dimple", "bullet hole", "knife stab", "falling off stage"]];
+
 var correctAnswers = [0, 1, 2, 3, 2, 3, 2, 0, 1];
+
 var gifIDs = ["FdFhE8iozVW92","a3loaGa7YNq7e","3o6ZtcZnK6dKp4ke9q",
               "cuf4xstINkczC", "j7plfiJAMLdLy", "RUSu65EOMX2PS",
               "DNIQUP1vE82Aw", "3o7TKDQOjI25GIE31S", "AXOrTXrVm6CJO"];
-var currentQuestion = -1;
-var countCorrect = 0;
-var countIncorrect = 0;
-var countUnanswered = 0;
+
+var currentQuestion, countCorrect, countIncorrect, countUnanswered;
 
 $(document).ready(function() {
 
+    $("#start_over").hide();
     clearQuestion();
 
     $("#start").on("click", function() {
 
-        $("#start").hide();
-        
-        $("#remain").html("Time Remaining: <span id='time'></span> Seconds");
+        initGame("start");
+    });
 
-        nextQuestion();
+    $("#start_over").on("click", function() {
 
+        initGame("start_over");
     });
 
     $(".answer").on("click", function() {
@@ -53,9 +53,11 @@ $(document).ready(function() {
         clearQuestion();
         var correctIdx = correctAnswers[currentQuestion];
         if(idx === correctIdx){
+
             $("#question").text("Correct!");
             countCorrect++;
         } else{
+
         	$("#question").text("Nope!");
             countIncorrect++;
             $("#correct_answer").text(`The correct answer was: ${answers[currentQuestion][correctIdx]}`);
@@ -69,6 +71,7 @@ $(document).ready(function() {
 
     	timerSeconds--;
         if(timerSeconds >= 0){
+
             $("#time").text(timerSeconds);
         }
 
@@ -76,11 +79,14 @@ $(document).ready(function() {
 
             clearInterval(intervalId);
             clearQuestion();
+
             var correctIdx = correctAnswers[currentQuestion];
             $("#question").text("Out of Time!");
             countUnanswered++;
+
             $("#image").attr("src", `https://giphy.com/embed/${gifIDs[currentQuestion]}`);
             $("#correct_answer").text(`The correct answer was: ${answers[currentQuestion][correctIdx]}`);
+
             timerId = setTimeout(nextQuestion, 5000);
         }
     }
@@ -104,6 +110,7 @@ $(document).ready(function() {
     	currentQuestion++;
         
         if(currentQuestion < questions.length){
+
             $("#correct_answer").html("");
             $("#image").attr("src", "");
         	$(".answer").show();
@@ -113,8 +120,10 @@ $(document).ready(function() {
             $("#answer_3").text(answers[currentQuestion][2]);
             $("#answer_4").text(answers[currentQuestion][3]);
             $("#time").text(timerSeconds);
+
             intervalId = setInterval(countDown, 1000);
         } else {
+
             var result = "All done, here's how you did!<br>";
             var results = "Correct Answers: " +
                        countCorrect + 
@@ -127,7 +136,25 @@ $(document).ready(function() {
             $("#image").hide();
             $("#correct_answer").html(results);
             $(".answer").hide();
+            $("#start_over").show();
         }
+    }
+
+    function initGame(buttonName){
+
+        timerSeconds = 30;
+        currentQuestion = -1;
+        countCorrect = 0;
+        countIncorrect = 0;
+        countUnanswered = 0;
+
+        $(`#${buttonName}`).hide();
+        
+        $("#remain").html("Time Remaining: <span id='time'></span> Seconds");
+
+        $("#image").show();
+
+        nextQuestion();
     }
 
 });
