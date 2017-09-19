@@ -1,31 +1,42 @@
 var timerSeconds, intervalId, timerId;
 
-var questions = ["Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G. all went to the same...",
-                 "This rapper faced an animal cruelty charge in Teaneck, New Jersey in 1999.",
-                 "This rap artist challenged L.L. Cool J in his hit single Second Round K.O.",
-                 "In his song titled Mosh, this artist protested against president G.W. Bush.",
-                 "This female rapper was fired from her waitress job at Red Lobster in the Bronx" +
-                 " because of her discourtesy to customers.",
-                 "Which rap artist appeared in a 2001 music video with his body shrunken but his head enlarged?",
-                 "Which rap group made the hit single Shit Can Happen?",
-                 "How many pounds maximum did rapper Big Pun weigh?",
-                 "50 Cent's left cheek has a mark or scar from:"];
-
-var answers = [["High school", "Gym", "Barber shop", "Costco"],
-               ["Busta Rhymes", "DMX", "Flo Rida", "Ja Rule"],
-               ["Busta Rhymes", "Slick Rick", "Canibus", "Method Man"],
-               ["Limp Bizkit", "Ludacris", "Puff Daddy", "Eminem"],
-               ["Lil' Kim", "Missy Elliot", "Nicki Minaj", "Remy Ma"],
-               ["DMX", "LL Cool J", "Outkast", "Ludacris"],
-               ["Wu-Tang", "Capone N Noreaga", "D12", "Q-Tip"],
-               ["698", "300", "225", "350"],
-               ["dimple", "bullet hole", "knife stab", "falling off stage"]];
-
-var correctAnswers = [0, 1, 2, 3, 2, 3, 2, 0, 1];
-
-var gifIDs = ["FdFhE8iozVW92","a3loaGa7YNq7e","3o6ZtcZnK6dKp4ke9q",
-              "cuf4xstINkczC", "j7plfiJAMLdLy", "RUSu65EOMX2PS",
-              "DNIQUP1vE82Aw", "3o7TKDQOjI25GIE31S", "AXOrTXrVm6CJO"];
+var questionObjArr = [{question: 'Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G. all went to the same...',
+                       answers: ['High school', 'Gym', 'Barber shop', 'Costco'],
+                       correctAnswer: 0,
+                       gifID: 'FdFhE8iozVW92'},
+                      {question: 'This rapper faced an animal cruelty charge in Teaneck, New Jersey in 1999.',
+                       answers: ['Busta Rhymes', 'DMX', 'Flo Rida', 'Ja Rule'],
+                       correctAnswer: 1,
+                       gifID: 'a3loaGa7YNq7e'},
+                      {question: 'This rap artist challenged L.L. Cool J in his hit single Second Round K.O.',
+                       answers: ['Busta Rhymes', 'Slick Rick', 'Canibus', 'Method Man'],
+                       correctAnswer: 2,
+                       gifID: '3o6ZtcZnK6dKp4ke9q'},
+                      {question: 'In his song titled Mosh, this artist protested against president G.W. Bush.',
+                       answers: ['Limp Bizkit', 'Ludacris', 'Puff Daddy', 'Eminem'],
+                       correctAnswer: 3,
+                       gifID: 'cuf4xstINkczC'},
+                      {question: 'This female rapper was fired from her waitress job at Red Lobster in the Bronx' +
+                                 ' because of her discourtesy to customers.',
+                       answers: ['Lil\' Kim', 'Missy Elliot', 'Nicki Minaj', 'Remy Ma'],
+                       correctAnswer: 2,
+                       gifID: 'j7plfiJAMLdLy'},
+                      {question: 'Which rap artist appeared in a 2001 music video with his body shrunken but his head enlarged?',
+                       answers: ['DMX', 'LL Cool J', 'Outkast', 'Ludacris'],
+                       correctAnswer: 3,
+                       gifID: 'RUSu65EOMX2PS'},
+                      {question: 'Which rap group made the hit single Shit Can Happen?',
+                       answers: ['Wu-Tang', 'Capone N Noreaga', 'D12', 'Q-Tip'],
+                       correctAnswer: 2,
+                       gifID: 'DNIQUP1vE82Aw'},
+                      {question: 'How many pounds maximum did rapper Big Pun weigh?',
+                       answers: ['698', '300', '225', '350'],
+                       correctAnswer: 0,
+                       gifID: '3o7TKDQOjI25GIE31S'},
+                      {question: '50 Cent\'s left cheek has a mark or scar from:',
+                       answers: ['dimple', 'bullet hole', 'knife stab', 'falling off stage'],
+                       correctAnswer: 1,
+                       gifID: 'AXOrTXrVm6CJO'}];
 
 var currentQuestion, countCorrect, countIncorrect, countUnanswered;
 
@@ -34,14 +45,9 @@ $(document).ready(function() {
     $("#start_over").hide();
     clearQuestion();
 
-    $("#start").on("click", function() {
+    $(".button").on("click", function() {
 
-        initGame("start");
-    });
-
-    $("#start_over").on("click", function() {
-
-        initGame("start_over");
+        initGame($(this).attr("id"));
     });
 
     $(".answer").on("click", function() {
@@ -51,7 +57,7 @@ $(document).ready(function() {
         var idx = parseInt($(this).attr("value"));
 
         clearQuestion();
-        var correctIdx = correctAnswers[currentQuestion];
+        var correctIdx = questionObjArr[currentQuestion].correctAnswer;
         if(idx === correctIdx){
 
             $("#question").text("Correct!");
@@ -60,10 +66,10 @@ $(document).ready(function() {
 
         	$("#question").text("Nope!");
             countIncorrect++;
-            $("#correct_answer").text(`The correct answer was: ${answers[currentQuestion][correctIdx]}`);
+            $("#correct_answer").text(`The correct answer was: ${questionObjArr[currentQuestion].answers[correctIdx]}`);
         }
 
-        $("#image").attr("src", `https://giphy.com/embed/${gifIDs[currentQuestion]}`);
+        $("#image").attr("src", `https://giphy.com/embed/${questionObjArr[currentQuestion].gifID}`);
         timerId = setTimeout(nextQuestion, 5000);
     });
 
@@ -80,12 +86,12 @@ $(document).ready(function() {
             clearInterval(intervalId);
             clearQuestion();
 
-            var correctIdx = correctAnswers[currentQuestion];
+            var correctIdx = questionObjArr[currentQuestion].correctAnswer;
             $("#question").text("Out of Time!");
             countUnanswered++;
 
-            $("#image").attr("src", `https://giphy.com/embed/${gifIDs[currentQuestion]}`);
-            $("#correct_answer").text(`The correct answer was: ${answers[currentQuestion][correctIdx]}`);
+            $("#image").attr("src", `https://giphy.com/embed/${questionObjArr[currentQuestion].gifID}`);
+            $("#correct_answer").text(`The correct answer was: ${questionObjArr[currentQuestion].answers[correctIdx]}`);
 
             timerId = setTimeout(nextQuestion, 5000);
         }
@@ -93,7 +99,7 @@ $(document).ready(function() {
 
     function clearQuestion(){
 
-    	$("#question").text("");
+        $("#question").text("");
         $("#answer_1").text("");
         $("#answer_1").hide();
         $("#answer_2").text("");
@@ -107,18 +113,18 @@ $(document).ready(function() {
     function nextQuestion(){
 
         timerSeconds = 30;
-    	currentQuestion++;
+      	currentQuestion++;
         
-        if(currentQuestion < questions.length){
+        if(currentQuestion < questionObjArr.length){
 
             $("#correct_answer").html("");
             $("#image").attr("src", "");
-        	$(".answer").show();
-            $("#question").text(questions[currentQuestion]);
-            $("#answer_1").text(answers[currentQuestion][0]);
-            $("#answer_2").text(answers[currentQuestion][1]);
-            $("#answer_3").text(answers[currentQuestion][2]);
-            $("#answer_4").text(answers[currentQuestion][3]);
+        	  $(".answer").show();
+            $("#question").text(questionObjArr[currentQuestion].question);
+            $("#answer_1").text(questionObjArr[currentQuestion].answers[0]);
+            $("#answer_2").text(questionObjArr[currentQuestion].answers[1]);
+            $("#answer_3").text(questionObjArr[currentQuestion].answers[2]);
+            $("#answer_4").text(questionObjArr[currentQuestion].answers[3]);
             $("#time").text(timerSeconds);
 
             intervalId = setInterval(countDown, 1000);
