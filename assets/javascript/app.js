@@ -36,7 +36,12 @@ var questionObjArr = [{question: 'Jay-Z, Busta Rhymes, DMX, and Notorious B.I.G.
                       {question: '50 Cent\'s left cheek has a mark or scar from:',
                        answers: ['dimple', 'bullet hole', 'knife stab', 'falling off stage'],
                        correctAnswer: 1,
-                       gifID: 'AXOrTXrVm6CJO'}];
+                       gifID: 'AXOrTXrVm6CJO'},
+                      {question: 'When Kanye West rhymed \'If you could feel how my face felt, you would know how Ma$e felt\'' +
+                                 ' he was referring to Ma$e\'s run-in with:',
+                       answers: ['Puff Daddy', 'Ghostface', '50 Cent', 'Nas'],
+                       correctAnswer: 1,
+                       gifID: 'pjsEjoPU6i45G'},];
 
 var currentQuestion, countCorrect, countIncorrect, countUnanswered;
 
