@@ -17,25 +17,25 @@ body {
 }
 
 #main {
-	background-color: #F5F5F5;
-	width: 600px;
-	height: 500px;
-	margin: 0 auto;
-	padding: 20px;
+    background-color: #F5F5F5;
+    width: 600px;
+    height: 500px;
+    margin: 0 auto;
+    padding: 20px;
     border: 2px solid blue;
     border-radius: 25px;
 }
 
 h1 {
-	color: #18399a;
-	text-align: center;
+    color: #18399a;
+    text-align: center;
     font-size: 40px;
     font-family: "Arial Black", Gadget, sans-serif;
 }
 
 .answer {
-	font-size: 22px;
-	height: 28px;
+    font-size: 22px;
+    height: 28px;
     line-height: 30px;
 }
 

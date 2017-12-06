@@ -69,7 +69,7 @@ $(document).ready(function() {
             countCorrect++;
         } else{
 
-        	$("#question").text("Nope!");
+            $("#question").text("Nope!");
             countIncorrect++;
             $("#correct_answer").text(`The correct answer was: ${questionObjArr[currentQuestion].answers[correctIdx]}`);
         }
@@ -80,7 +80,7 @@ $(document).ready(function() {
 
     function countDown(){
 
-    	timerSeconds--;
+      timerSeconds--;
         if(timerSeconds >= 0){
 
             $("#time").text(timerSeconds);
@@ -118,13 +118,13 @@ $(document).ready(function() {
     function nextQuestion(){
 
         timerSeconds = 30;
-      	currentQuestion++;
+        currentQuestion++;
         
         if(currentQuestion < questionObjArr.length){
 
             $("#correct_answer").html("");
             $("#image").attr("src", "");
-        	  $(".answer").show();
+            $(".answer").show();
             $("#question").text(questionObjArr[currentQuestion].question);
             $("#answer_1").text(questionObjArr[currentQuestion].answers[0]);
             $("#answer_2").text(questionObjArr[currentQuestion].answers[1]);
